@@ -11,8 +11,12 @@ import tensorflow as tf
 
 app = Flask(__name__)
 graph = tf.Graph()
-with graph.as_default():
-    model = VGG16(weights='imagenet', include_top=True)
+
+def load_model():
+    global model
+    global graph
+    with graph.as_default():
+        model = VGG16(weights='imagenet', include_top=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
