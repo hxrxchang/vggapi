@@ -7,13 +7,17 @@ from keras.preprocessing import image
 import numpy as np
 from PIL import Image
 import io
+import tensorflow as tf
 
 app = Flask(__name__)
 model = None
+graph = tf.get_default_graph()
 
 def load_model():
     global model
-    model = VGG16(weights='imagenet', include_top=True)
+    global graph
+    with graph.as_default():
+        model = VGG16(weights='imagenet', include_top=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -28,8 +32,10 @@ def upload_file():
             img = image.img_to_array(img)
             img = np.expand_dims(img, axis=0)
             inputs = preprocess_input(img)
-
-            preds = model.predict(inputs)
+            
+            global graph
+            with graph.as_default():
+                preds = model.predict(inputs)
             results = decode_predictions(preds)
 
             response['predictions'] = []
