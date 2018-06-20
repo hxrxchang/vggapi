@@ -11,7 +11,7 @@ import tensorflow as tf
 
 app = Flask(__name__)
 model = None
-graph = None
+graph = tf.get_default_graph()
 
 def load_model():
     global model
