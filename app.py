@@ -10,14 +10,9 @@ import io
 import tensorflow as tf
 
 app = Flask(__name__)
-model = None
 graph = tf.Graph()
-
-def load_model():
-    global model
-    global graph
-    with graph.as_default():
-        model = VGG16(weights='imagenet', include_top=True)
+with graph.as_default():
+    model = VGG16(weights='imagenet', include_top=True)
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
@@ -33,6 +28,7 @@ def upload_file():
             img = np.expand_dims(img, axis=0)
             inputs = preprocess_input(img)
             
+            global graph
             with graph.as_default():
                 preds = model.predict(inputs)
             results = decode_predictions(preds)
