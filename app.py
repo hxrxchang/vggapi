@@ -15,9 +15,7 @@ graph = tf.get_default_graph()
 
 def load_model():
     global model
-    global graph
     model = VGG16(weights='imagenet', include_top=True)
-    graph = tf.get_default_graph()
 
 @app.route('/', methods=['GET', 'POST'])
 def upload_file():
