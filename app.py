@@ -58,4 +58,4 @@ if __name__ == '__main__':
     load_model()
     # no-thread: https://github.com/keras-team/keras/issues/2397#issuecomment-377914683
     # avoid model.predict runs before model initiated
-    app.run(threaded=False)
+    app.run(debug=False, threaded=False)
